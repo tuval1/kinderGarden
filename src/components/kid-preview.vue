@@ -14,6 +14,8 @@
                 <p>Address: {{parent.address}}</p>
                 </div>
             <button @click="updateKidStatus(kid)">Arrived</button>
+            <button @click="deleteKid(kid)">x</button>
+            <button @click="">Edit</button>
         </div>
     </section>       
 </template>
@@ -32,6 +34,9 @@ export default {
     methods: {
         updateKidStatus(kid){
             this.$emit('updateStatus',kid);
+        },
+        deleteKid(kid){
+            this.$emit('deleteKid', kid);
         }
     }
 }
@@ -47,5 +52,6 @@ export default {
 .list-container {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 </style>

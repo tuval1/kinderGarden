@@ -27,8 +27,29 @@ const updateKidStatus = kid => {
   })
 }
 
+const createNewKid = (kidName,kidBirthday) => {
+  var kid = {
+    name: kidName,
+    birthday: kidBirthday,
+    isArrived: false
+  }  
+  return axios.post(`${baseUrl}`,kid)
+  .then(function (response){    
+    return response.data;
+  })
+}
+
+const deleteKid = (kid) => {  
+  return axios.delete(`${baseUrl}/${kid._id}`)
+  .then(function(response){
+    return response.data;
+  })
+}
+
 
 export default {
   query,
-  updateKidStatus
+  updateKidStatus,
+  createNewKid,
+  deleteKid
 }

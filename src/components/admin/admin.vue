@@ -30,13 +30,13 @@
        <br>
        <label>Address:
        <input type="text" name="address" v-model="pAddress">
-       </label>
-
+       </label><br>
+        <button @click.stop="createNewKid">Send</button>
     </section>       
 </template>
 
 <script>
-
+import kinderService from '../../services/kinderService'
 export default {
     
     name: 'kids-admin',
@@ -54,7 +54,15 @@ export default {
     },
     methods: {
         createNewKid(){
-            
+            const kidName     = this.kidName;
+            const kidBirthday = this.kidBirthday;
+            const file        = this.file;
+            // kinderService.createNewKid(kidName,kidBirthday);
+            this.$store.dispatch({ type: 'CREATE_KID',kidName,kidBirthday });   
+
+            this.kidName = '';
+            this.kidBirthday = '';
+            this.file = '';
         }
     }
 }

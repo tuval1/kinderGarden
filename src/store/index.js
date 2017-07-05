@@ -10,16 +10,19 @@ const state = {
 };
 
 const getters = {  
-    kidsToShow(){
-      console.log('getter kids:',state.kids);
+    kidsToShow(){      
       return state.kids;
     }
 }
 
 const mutations = {
   KIDS_LOAD(state, { kids }) {    
-    state.kids = kids;
-    
+    state.kids = kids;    
+  },
+  KID_DELETE(state, { kid }){    
+    const idx = state.kids.findIndex( currkid => currkid._id === kid._id );
+    state.kids.splice(idx,1);
+    alert('kid delete successfully');
   }
 }
 
@@ -32,6 +35,22 @@ const actions = {
         context.commit(payload)
       });
   },
+  CREATE_KID(context, payload){
+    console.log('action create kid payload: ',payload.kidName,payload.kidBirthday)
+    kinderService.createNewKid(payload.kidName,payload.kidBirthday)
+    .then(
+      alert('kid added successfully')
+    );
+  },
+  KID_DELETE(context, payload){     
+    kinderService.deleteKid(payload.kid)
+    .then(res => {
+      payload.kid._id = res;
+      console.log('delete action payload',payload.kid._id);      
+      context.commit(payload);
+      
+    });    
+  }
 }
 const Store = new Vuex.Store({
   state,
