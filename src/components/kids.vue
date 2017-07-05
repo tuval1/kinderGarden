@@ -1,46 +1,34 @@
 <template>
 <section>
     <div class="list-container">
-        
-        <div class="box" v-for="kid in kids">
-            <h3>{{kid.name}}</h3>
-            <span></span>
-            <button>Arrived</button>
-        </div>
-            
+        <kid-preview v-for="currKid in kids" :kid="currKid"></kid-preview>            
     </div>
-    <button @click="getKidsList">get list</button>
+    
 </section>
 </template>
 
 <script>
 import kinderService from '../services/kinderService'
+import kidPreview from './kid-preview'
 export default {
     data(){
         return {
             kids: null
         }
     },
-    methods: {
-        getKidsList(){
-            const kidsQuery = kinderService.query();
-            kidsQuery.then(res => {
-                this.kids = res;
-            });
-            
+    created(){
+        kinderService.query().then(res => { this.kids = res });            
+    },
+    components: {
+        kidPreview
+    },
+    methods: {       
+        updateKidStatus(kid){
+            kinderService.updateKidStatus(kid);
         }
     }
 }
 </script>
 
 <style>
-.box {
-    border: 1px solid;
-    width: 250px;
-
-}
-.list-container {
-    display: flex;
-    flex-direction: row;
-}
 </style>

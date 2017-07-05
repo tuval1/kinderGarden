@@ -1,10 +1,10 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3003/data';
+const baseUrl = 'http://localhost:3003/data/kinderDB';
 
 
 
 const query = () => {
-  return axios.get('http://localhost:3003/data/kinderDB')
+  return axios.get(baseUrl)
     .then(function (response) {
       console.log('server response: ',response);
       return response.data;
@@ -16,7 +16,17 @@ const query = () => {
 }
 
 
+const updateKidStatus = kid => {  
+  console.log('service kid obj',kid);
+  // return axios.put(`${baseUrl}`,kid)
+  // .then(function (response) {
+  //   console.log('update kid status res',response);
+  //   return response.data;
+  // })
+}
+
 
 export default {
-  query
+  query,
+  updateKidStatus
 }
