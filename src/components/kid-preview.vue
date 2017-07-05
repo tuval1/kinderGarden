@@ -30,7 +30,9 @@ export default {
         }
     },
     methods: {
-        
+        updateKidStatus(kid){
+            this.$emit('updateStatus',kid);
+        }
     }
 }
 </script>

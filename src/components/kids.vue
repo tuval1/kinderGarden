@@ -1,7 +1,7 @@
 <template>
 <section>
     <div class="list-container">
-        <kid-preview v-for="currKid in kids" :kid="currKid"></kid-preview>            
+        <kid-preview v-for="currKid in kids" :kid="currKid" @updateStatus="updateKidStatus"></kid-preview>            
     </div>
     
 </section>
