@@ -2,6 +2,7 @@
   <div id="app">
     <header>
       <h1>Kinder Garden</h1>
+      
     </header>
     <main>
       

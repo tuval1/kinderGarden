@@ -13,11 +13,17 @@ import kidPreview from './kid-preview'
 export default {
     data(){
         return {
-            kids: null
+            
         }
     },
-    created(){
-        kinderService.query().then(res => { this.kids = res });            
+    created(){        
+        this.$store.dispatch({ type: 'KIDS_LOAD' });      
+        
+    },
+    computed: {
+        kids(){            
+            return this.$store.getters.kidsToShow;
+        }
     },
     components: {
         kidPreview

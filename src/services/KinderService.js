@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from '../store'
 const baseUrl = 'http://localhost:3003/data/kinderDB';
 
 
@@ -17,12 +18,13 @@ const query = () => {
 
 
 const updateKidStatus = kid => {  
-  console.log('service kid obj',kid);
-  // return axios.put(`${baseUrl}`,kid)
-  // .then(function (response) {
-  //   console.log('update kid status res',response);
-  //   return response.data;
-  // })
+  //console.log('service kid obj',store.state.kids);
+  kid.isArrived = !kid.isArrived;
+  return axios.put(`${baseUrl}/${kid._id}`,kid)
+  .then(function (response) {
+    
+    return response.data;
+  })
 }
 
 
