@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 const state = {
   kids: [],  
+  activeUser: JSON.parse(localStorage.getItem('activeUser'))
   
 };
 
@@ -25,8 +26,15 @@ const mutations = {
     alert('kid delete successfully');
   },
   CREATE_KID(state, { kid } ) {
-    console.log('mutation kid:',kid);
+    
     state.kids.push( kid );
+  },
+  USER_LOGIN(state, { active }){    
+    localStorage.setItem('activeUser',JSON.stringify(active.user));
+    state.activeUser = JSON.parse(localStorage.getItem('activeUser'));
+    
+    console.log('state active user:', state.activeUser);
+
   }
 }
 
@@ -60,10 +68,20 @@ const actions = {
     kinderService.deleteKid(payload.kid)
     .then(res => {
       payload.kid._id = res;
-      console.log('delete action payload',payload.kid._id);      
+        
       context.commit(payload);
       
     });    
+  },
+  USER_LOGIN(context,payload) {
+    console.log('action login',payload.user);
+    kinderService.login(payload.user)
+    .then(res => {
+      res.user.password = '';
+      console.log('login action res:', res);
+      payload.active = res;
+      context.commit(payload);
+    })
   }
 }
 const Store = new Vuex.Store({

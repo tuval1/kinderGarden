@@ -13,25 +13,27 @@
        <label>Image:
        <input type="file" name="file">
        </label>
+       <div class="parents-form">
+            <h4>Parents</h4>
+            <form>
+            <label>name:
+            <input type="text" name="pName" v-model="pName">
+            </label>
+            <br>
+            <label>phone:
+            <input type="tel" name="pPhone" v-model="pPhone">
+            </label>
 
-       <br><h4>Parents</h4>
-       <label>name:
-       <input type="text" name="pName" v-model="pName">
-       </label>
-       <br>
-       <label>phone:
-       <input type="tel" name="pPhone" v-model="pPhone">
-       </label>
-
-       <br>
-       <label>email:
-       <input type="email" name="pEmail" v-model="pEmail">
-       </label><br>
-       
-       <label>Address:
-       <input type="text" name="address" v-model="pAddress">
-       </label><br>
-       
+            <br>
+            <label>email:
+            <input type="email" name="pEmail" v-model="pEmail">
+            </label><br>
+            
+            <label>Address:
+            <input type="text" name="address" v-model="pAddress">
+            </label><br>
+            </form>
+       </div>
         <button @click.stop="createNewKid">Send</button><br>
         
     </section>       

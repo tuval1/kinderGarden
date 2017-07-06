@@ -1,11 +1,12 @@
 import axios from 'axios'
 import store from '../store'
-const baseUrl = 'http://localhost:3003/data/kinderDB';
+const crudUrl = 'http://localhost:3003/data/kinderDB';
+const baseUrl = 'http://localhost:3003';
 
 
 
 const query = () => {
-  return axios.get(baseUrl)
+  return axios.get(crudUrl)
     .then(function (response) {
       console.log('server response: ',response);
       return response.data;
@@ -20,7 +21,7 @@ const query = () => {
 const updateKidStatus = kid => {  
   //console.log('service kid obj',store.state.kids);
   kid.isArrived = !kid.isArrived;
-  return axios.put(`${baseUrl}/${kid._id}`,kid)
+  return axios.put(`${crudUrl}/${kid._id}`,kid)
   .then(function (response) {
     
     return response.data;
@@ -29,14 +30,14 @@ const updateKidStatus = kid => {
 
 const createNewKid = ( kid ) => {
   
-  return axios.post(`${baseUrl}`,kid)
+  return axios.post(`${crudUrl}`,kid)
   .then(function (response){    
     return response.data;
   })
 }
 
 const deleteKid = (kid) => {  
-  return axios.delete(`${baseUrl}/${kid._id}`)
+  return axios.delete(`${crudUrl}/${kid._id}`)
   .then(function(response){
     return response.data;
   })
@@ -44,8 +45,16 @@ const deleteKid = (kid) => {
 
 const updateKid = (kid) => {
   console.log('service update kid: ',kid );
-  return axios.put(`${baseUrl}/${kid._id}`, kid)
+  return axios.put(`${crudUrl}/${kid._id}`, kid)
   .then(function (response){
+    return response.data;
+  })
+}
+
+const login = ( user ) => {  
+  return axios.post(`${baseUrl}/login`, user)
+  .then( function(response) {
+    
     return response.data;
   })
 }
@@ -56,5 +65,6 @@ export default {
   updateKidStatus,
   createNewKid,
   deleteKid,
-  updateKid
+  updateKid,
+  login
 }
