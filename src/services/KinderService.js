@@ -46,10 +46,19 @@ const deleteKid = (kid) => {
   })
 }
 
+const updateKid = (kid) => {
+  console.log('service update kid: ',kid );
+  return axios.put(`${baseUrl}/${kid._id}`, kid)
+  .then(function (response){
+    return response.data;
+  })
+}
+
 
 export default {
   query,
   updateKidStatus,
   createNewKid,
-  deleteKid
+  deleteKid,
+  updateKid
 }

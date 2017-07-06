@@ -23,6 +23,10 @@ const mutations = {
     const idx = state.kids.findIndex( currkid => currkid._id === kid._id );
     state.kids.splice(idx,1);
     alert('kid delete successfully');
+  },
+  CREATE_KID(state, { kid } ) {
+    console.log('mutation kid:',kid);
+    state.kids.push( kid );
   }
 }
 
@@ -36,10 +40,20 @@ const actions = {
       });
   },
   CREATE_KID(context, payload){
-    console.log('action create kid payload: ',payload.kidName,payload.kidBirthday)
+    console.log('action create kid payload: ',payload.kidName,payload.kidBirthday )
     kinderService.createNewKid(payload.kidName,payload.kidBirthday)
     .then(
-      alert('kid added successfully')
+      kid => {
+        payload.kid = kid;
+        context.commit(payload);
+      }
+    );
+  },
+  UPDATE_KID(context,payload){
+    console.log('action update kid id: ',payload);
+    kinderService.updateKid( payload.updatedKidObj )
+    .then(
+      alert('Kid has been updated')
     );
   },
   KID_DELETE(context, payload){     

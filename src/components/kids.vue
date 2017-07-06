@@ -1,7 +1,9 @@
 <template>
 <section>
+    <a href="" @click.prevent="showCreatePanel">Create new kid</a>
     <div class="edit-area">
-        <admin :kid="selectedKid"></admin>
+        <admin :kid="selectedKid" :isEditMode="isEditMode" v-if="showAdminPanel"
+        @close="closeAdminPanel"></admin>
         </div>
     <div class="list-container">
         <kid-preview v-for="currKid in kids" :kid="currKid" @updateStatus="updateKidStatus"
@@ -20,6 +22,7 @@ export default {
     data(){
         return {
             isEditMode: false,
+            showAdminPanel: false,
             selectedKid: null
         }
     },
@@ -47,8 +50,15 @@ export default {
         },
         editKid(kid){
             this.isEditMode = true;
-            this.selectedKid = kid;    
-            console.log('selected kid',this.selectedKid);
+            this.selectedKid = kid;
+            this.showAdminPanel = true;
+        },
+        closeAdminPanel(){
+            this.showAdminPanel = false;
+            this.isEditMode     = false;
+        },
+        showCreatePanel(){
+            this.showAdminPanel = true;
         }
     }
 }
