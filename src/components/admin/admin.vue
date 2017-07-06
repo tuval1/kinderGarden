@@ -47,7 +47,7 @@ export default {
         
     },
     created(){
-       
+       console.log('created kid: ',this.kid);
     },
     
     data(){
@@ -72,10 +72,11 @@ export default {
             const kidBirthday = this.kidBirthday;
             const file        = this.file;
             let kidId         = null;
+            //get the kid id for updating the existing kid
             if (this.kid) {
                 kidId = this.kid._id;
             }          
-            const updatedKidObj = {
+            const newKid = {
                 name: kidName, 
                 birthday: kidBirthday, 
                 isArrived: false,
@@ -85,9 +86,9 @@ export default {
               console.log('iseditmode: ',this.isEditMode);
             
             if ( this.isEditMode ) {
-                this.$store.dispatch({ type: 'UPDATE_KID', updatedKidObj });   
+                this.$store.dispatch({ type: 'UPDATE_KID', newKid });   
             } else {
-                this.$store.dispatch({ type: 'CREATE_KID', kidName, kidBirthday, kidId });   
+                this.$store.dispatch({ type: 'CREATE_KID', newKid });   
             }
             
             this.kidName = '';

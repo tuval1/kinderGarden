@@ -2,7 +2,7 @@
 <section>
     <a href="" @click.prevent="showCreatePanel">Create new kid</a>
     <div class="edit-area">
-        <admin :kid="selectedKid" :isEditMode="isEditMode" v-if="showAdminPanel"
+        <admin :kid="selectedKid" :isEditMode="isEditMode" v-show="showAdminPanel"
         @close="closeAdminPanel"></admin>
         </div>
     <div class="list-container">
@@ -36,8 +36,7 @@ export default {
         }
     },
     components: {
-        kidPreview,
-        
+        kidPreview,        
         admin
     },
     methods: {       
@@ -49,13 +48,14 @@ export default {
             this.$store.dispatch({ type: 'KID_DELETE', kid }); 
         },
         editKid(kid){
-            this.isEditMode = true;
             this.selectedKid = kid;
+            this.isEditMode = true;            
             this.showAdminPanel = true;
         },
         closeAdminPanel(){
             this.showAdminPanel = false;
             this.isEditMode     = false;
+            this.selectedKid    = null;
         },
         showCreatePanel(){
             this.showAdminPanel = true;

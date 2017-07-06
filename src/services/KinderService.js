@@ -27,12 +27,8 @@ const updateKidStatus = kid => {
   })
 }
 
-const createNewKid = (kidName,kidBirthday) => {
-  var kid = {
-    name: kidName,
-    birthday: kidBirthday,
-    isArrived: false
-  }  
+const createNewKid = ( kid ) => {
+  
   return axios.post(`${baseUrl}`,kid)
   .then(function (response){    
     return response.data;

@@ -40,8 +40,8 @@ const actions = {
       });
   },
   CREATE_KID(context, payload){
-    console.log('action create kid payload: ',payload.kidName,payload.kidBirthday )
-    kinderService.createNewKid(payload.kidName,payload.kidBirthday)
+    console.log('action create kid payload: ', payload.newKid )
+    kinderService.createNewKid( payload.newKid )
     .then(
       kid => {
         payload.kid = kid;
@@ -51,7 +51,7 @@ const actions = {
   },
   UPDATE_KID(context,payload){
     console.log('action update kid id: ',payload);
-    kinderService.updateKid( payload.updatedKidObj )
+    kinderService.updateKid( payload.newKid )
     .then(
       alert('Kid has been updated')
     );
