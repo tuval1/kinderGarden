@@ -15,8 +15,9 @@
                 </div>
             <button @click="updateKidStatus(kid)">Arrived</button>
             <button @click="deleteKid(kid)">x</button>
-            <button @click="">Edit</button>
+            <button @click="editKid(kid)">Edit</button>
         </div>
+        
     </section>       
 </template>
 
@@ -37,6 +38,10 @@ export default {
         },
         deleteKid(kid){
             this.$emit('deleteKid', kid);
+        },
+        editKid(kid){
+            console.log('request edit kid',kid);
+            this.$emit('edit', kid);
         }
     }
 }

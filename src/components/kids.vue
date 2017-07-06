@@ -1,11 +1,11 @@
 <template>
 <section>
     <div class="edit-area">
-        <kid-edit></kid-edit>
+        <admin :kid="selectedKid"></admin>
         </div>
     <div class="list-container">
         <kid-preview v-for="currKid in kids" :kid="currKid" @updateStatus="updateKidStatus"
-        @deleteKid="deleteKid"></kid-preview>            
+        @deleteKid="deleteKid" @edit="editKid"></kid-preview>            
     </div>
     
 </section>
@@ -14,11 +14,13 @@
 <script>
 import kinderService from '../services/kinderService'
 import kidPreview from './kid-preview'
-import kidEdit from './admin/kid-edit'
+
+import admin from './admin/admin'
 export default {
     data(){
         return {
-            
+            isEditMode: false,
+            selectedKid: null
         }
     },
     created(){        
@@ -32,7 +34,8 @@ export default {
     },
     components: {
         kidPreview,
-        kidEdit
+        
+        admin
     },
     methods: {       
         updateKidStatus(kid){
@@ -41,6 +44,11 @@ export default {
         deleteKid(kid){
             console.log('request delete',kid);
             this.$store.dispatch({ type: 'KID_DELETE', kid }); 
+        },
+        editKid(kid){
+            this.isEditMode = true;
+            this.selectedKid = kid;    
+            console.log('selected kid',this.selectedKid);
         }
     }
 }

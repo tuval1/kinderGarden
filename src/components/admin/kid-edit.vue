@@ -1,7 +1,7 @@
 <template>
     <section>
        <h3>Edit Area</h3>
-       
+       {{kid}}
     </section>       
 </template>
 
@@ -13,7 +13,13 @@ export default {
     props: ['kid'],
     data(){
         return {
-            
+            kidName: '',
+            kidBirthday: '',
+            file: '',
+            pName: '',
+            pPhone: '',
+            pEmail: '',
+            pAddress: ''
         }
     },
     methods: {

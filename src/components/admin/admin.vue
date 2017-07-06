@@ -1,5 +1,7 @@
 <template>
     <section>
+        {{kidName}}<br>
+        {{kid}}
        <h3>Admin area</h3>
        <label>Kid Name:
        <input type="text" name="kidName" v-model="kidName">
@@ -40,17 +42,24 @@ import kinderService from '../../services/kinderService'
 export default {
     
     name: 'kids-admin',
+    props: ['kid'],
+    created(){
+       
+    },
     
     data(){
-        return {
-            kidName: '',
-            kidBirthday: '',
-            file: '',
+        return {            
+            kidName: this.kid.name,
+            kidBirthday: 'this.kid.birthday',
+            file: 'this.kid.file',
             pName: '',
             pPhone: '',
             pEmail: '',
             pAddress: ''
         }
+    },
+    computed: {
+        
     },
     methods: {
         createNewKid(){
@@ -63,6 +72,11 @@ export default {
             this.kidName = '';
             this.kidBirthday = '';
             this.file = '';
+        },
+    },
+    watch: {
+        kid(kidVal){
+            this.kidName = kidVal.name;
         }
     }
 }
