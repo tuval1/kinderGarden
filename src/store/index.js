@@ -1,18 +1,31 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import kinderService from '../services/kinderService'
+import router from '../router'
 
 Vue.use(Vuex)
 
 const state = {
   kids: [],  
-  activeUser: JSON.parse(localStorage.getItem('activeUser'))
+  activeUser: JSON.parse(localStorage.getItem('activeUser')),
+  filterTxt: '',
+  showAdminPanelState: false,
+  loading: true,  
+  permissionLevel: JSON.parse(localStorage.getItem('permissionLevel'))
   
 };
 
-const getters = {  
+const getters = {
     kidsToShow(){      
-      return state.kids;
+      return state.kids.filter(function(kid){
+        return kid.name.includes(state.filterTxt);
+      });
+    },
+    loader(){
+      return state.loading;
+    },
+    permissionLevel(){
+      return state.permissionLevel;
     }
 }
 
@@ -23,18 +36,39 @@ const mutations = {
   KID_DELETE(state, { kid }){    
     const idx = state.kids.findIndex( currkid => currkid._id === kid._id );
     state.kids.splice(idx,1);
-    alert('kid delete successfully');
-  },
-  CREATE_KID(state, { kid } ) {
     
-    state.kids.push( kid );
+  },
+  CREATE_KID(state, { kid } ) {    
+    state.kids.push( kid );    
+    state.loading = false;
+  },
+  TOGGLE_LOADER(){
+    state.loading = !state.loading;
   },
   USER_LOGIN(state, { active }){    
     localStorage.setItem('activeUser',JSON.stringify(active.user));
-    state.activeUser = JSON.parse(localStorage.getItem('activeUser'));
+    localStorage.setItem('permissionLevel',JSON.stringify(active.user.permissionLevel));
+    state.activeUser = JSON.parse(localStorage.getItem('activeUser'));  
     
-    console.log('state active user:', state.activeUser);
-
+    if(active.user.type==='admin') {
+      state.permissionLevel = 2;
+    } else if( active.user.type==='registered' ) {
+      state.permissionLevel = 1;
+    }
+    console.log('permission level',state.permissionLevel);
+    router.go('/admin');  
+  },
+  LOGOUT(){
+    localStorage.removeItem('activeUser');
+    localStorage.removeItem('permissionLevel');
+    state.activeUser = null;
+    console.log('mutation logout',state.activeUser)
+  },
+  KID_FILTER(state, payload) {
+    state.filterTxt = payload.txt;    
+  },
+  TOGGLE_ADMIN(){
+    state.showAdminPanelState = !state.showAdminPanelState;
   }
 }
 
@@ -48,7 +82,7 @@ const actions = {
       });
   },
   CREATE_KID(context, payload){
-    console.log('action create kid payload: ', payload.newKid )
+    
     kinderService.createNewKid( payload.newKid )
     .then(
       kid => {
@@ -58,10 +92,10 @@ const actions = {
     );
   },
   UPDATE_KID(context,payload){
-    console.log('action update kid id: ',payload);
+    
     kinderService.updateKid( payload.newKid )
     .then(
-      alert('Kid has been updated')
+      
     );
   },
   KID_DELETE(context, payload){     
@@ -74,11 +108,11 @@ const actions = {
     });    
   },
   USER_LOGIN(context,payload) {
-    console.log('action login',payload.user);
+    
     kinderService.login(payload.user)
     .then(res => {
       res.user.password = '';
-      console.log('login action res:', res);
+      
       payload.active = res;
       context.commit(payload);
     })

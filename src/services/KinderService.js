@@ -28,8 +28,7 @@ const updateKidStatus = kid => {
   })
 }
 
-const createNewKid = ( kid ) => {
-  
+const createNewKid = ( kid ) => {  
   return axios.post(`${crudUrl}`,kid)
   .then(function (response){    
     return response.data;
@@ -43,8 +42,7 @@ const deleteKid = (kid) => {
   })
 }
 
-const updateKid = (kid) => {
-  console.log('service update kid: ',kid );
+const updateKid = (kid) => {  
   return axios.put(`${crudUrl}/${kid._id}`, kid)
   .then(function (response){
     return response.data;
@@ -59,6 +57,13 @@ const login = ( user ) => {
   })
 }
 
+const logout = () => {
+  return axios.get(`${baseUrl}/logout`)
+  .then( function(response){
+    
+  })
+}
+
 
 export default {
   query,
@@ -66,5 +71,6 @@ export default {
   createNewKid,
   deleteKid,
   updateKid,
-  login
+  login,
+  logout
 }
