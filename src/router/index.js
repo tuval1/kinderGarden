@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
+
 import kids from '@/components/kids.vue'
 import admin from '@/components/admin/admin.vue'
 import login from '@/components/login/login.vue'

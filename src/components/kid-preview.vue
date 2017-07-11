@@ -8,23 +8,23 @@
 
         <md-card-header>
             <div class="md-title">{{kid.name}}</div>
-            
             <md-chip class="md-accent" v-if="kid.isArrived">Arrived</md-chip>
             <md-chip v-else>Not Arrived</md-chip>
             <div class="float-right">                
-                <md-button class="md-fab md-primary" v-bind:href="'tel:' + kid.parents[0].phone">
-                    <!--<a v-bind:href="kid.parents[0].phone">-->
-                        <md-icon>phone</md-icon>
-                        <!--</a>-->
+                <md-button class="md-fab md-primary" v-bind:href="'tel:' + kid.parents[0].phone">                    
+                        <md-icon>phone</md-icon>                        
                 </md-button>
-                </div>
+            </div>
         </md-card-header>
             
             
         <md-card-expand>
             <md-card-actions>  
-                <md-button class="md-raised" @click="updateKidStatus(kid)" v-if="this.$store.state.permissionLevel >= 1"
-                v-bind:class="[kid.isArrived ? 'md-accent' : '']">Arrived</md-button>
+                <md-button class="md-raised" @click="updateKidStatus(kid)" 
+                v-if="this.$store.state.permissionLevel >= 1"
+                v-bind:class="[kid.isArrived ? 'md-accent' : '']">
+                <i class="fa fa-check-circle fa-2x" aria-hidden="true"></i>
+                <span class="menu-label">Arrived</span></md-button>
 
                 <md-button class="md-raised md-warn" @click="deleteKid(kid)" v-if="this.$store.state.permissionLevel >= 2">
                     <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
@@ -66,7 +66,8 @@
             </md-card-content>
         </md-card-expand>
        </md-card>
-       </md-layout>    
+       </md-layout>  
+         
 </template>
 
 <script>

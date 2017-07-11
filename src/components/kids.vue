@@ -2,7 +2,7 @@
 <section>      
     <md-dialog-confirm
   :md-title="confirm.title"
-  :md-content-html="confirm.contentHtml + ' ' + '<b>' + 'JSON.stringify(this.selectedKid.name)' + '</b>' + ' from the list'"
+  :md-content-html="confirm.contentHtml + ' ' + '<b>' + kidName + '</b>' + ' from the list'"
   :md-ok-text="confirm.ok"
   :md-cancel-text="confirm.cancel"
   @open="onOpen"
@@ -15,11 +15,22 @@
         @close="closeAdminPanel"></admin>
     </div>
 
+    <kidFilter @toggleView="toggleListView"></kidFilter>
+    
+
     <div class="list-container">
+        <kid-preview-table :permission="this.$store.state.permissionLevel"
+        @updateStatus="updateKidStatus" @deleteKid="deleteKid" 
+        @edit="editKid" v-if="!showAdmin && listView" @openDialog="openDialog">
+        </kid-preview-table>
+
         <md-layout md-gutter>
-        <kid-preview v-for="currKid in kids" :kid="currKid" @updateStatus="updateKidStatus"
-        @deleteKid="deleteKid" @edit="editKid" v-if="!showAdmin" @openDialog="openDialog"></kid-preview>     
-        </md-layout>       
+            <kid-preview v-for="currKid in kids" :kid="currKid" @updateStatus="updateKidStatus"
+            @deleteKid="deleteKid" @edit="editKid" v-if="!showAdmin && !listView" @openDialog="openDialog">
+            </kid-preview>     
+        </md-layout>  
+
+        
     </div>
     
    
@@ -29,6 +40,7 @@
 <script>
 import kinderService from '../services/kinderService'
 import kidPreview from './kid-preview'
+import kidPreviewTable from './kid-preview-table'
 import kidFilter from './filter'
 import admin from './admin/admin'
 import confirm from './confirm'
@@ -39,12 +51,14 @@ export default {
         return {
             isEditMode: false,            
             selectedKid: null,
+            kidName: '',
             confirm: {
                 title: 'Are you sure?',
                 contentHtml: 'You are about to delete',
                 ok: 'OK',
                 cancel: 'Cancel'
-            }              
+            },
+            listView: false              
         }
     },
     created(){        
@@ -61,17 +75,18 @@ export default {
     components: {
         kidPreview,        
         admin,
-        kidFilter
-        
+        kidFilter,
+        kidPreviewTable        
     },
     methods: {       
         updateKidStatus(kid){
             kinderService.updateKidStatus(kid);
         },
-        deleteKid(){    
-            console.log('delete kid',this.selectedKid);
+        deleteKid(){                
             let kid = this.selectedKid;
             this.$store.dispatch({ type: 'KID_DELETE', kid }); 
+            this.clearSelectedKid();
+            console.log('selected kid after clear',this.selectedKid);
         },
         editKid(kid){
             this.selectedKid = kid;
@@ -81,24 +96,31 @@ export default {
         closeAdminPanel(){
             this.showAdminPanel = false;
             this.isEditMode     = false;
-            this.selectedKid    = null;
-        },        
+            this.clearSelectedKid()
+        },
+        clearSelectedKid(){
+            this.selectedKid = null;
+        },
+        toggleListView(){
+            this.listView = !this.listView;
+        },
         openDialog(ref,kid) {            
-            this.selectedKid = kid;            
+            this.selectedKid = kid;
+            this.kidName     = this.selectedKid.name;
             this.$refs[ref].open();
         },
-    closeDialog(ref) {
-      this.$refs[ref].close();
-    },
-    onOpen(kid) {
-      console.log('Opened',kid);
-    },
-    onClose(type) {
-      console.log('Closed', type);
-      if(type==='ok'){
-          console.log('confirmed');
-        this.deleteKid();
-      }
+        closeDialog(ref) {
+        this.$refs[ref].close();
+        },
+        onOpen(kid) {
+        console.log('Opened',kid);
+        },
+        onClose(type) {
+        console.log('Closed', type);
+        if(type==='ok'){
+            console.log('confirmed');
+            this.deleteKid();
+        }
     }
         
     },

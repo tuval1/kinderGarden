@@ -8,7 +8,7 @@ Vue.use(Vuex)
 const state = {
   kids: [],  
   activeUser: JSON.parse(localStorage.getItem('activeUser')),
-  filterTxt: '',
+  filterBy: {txt: '', param: null},
   showAdminPanelState: false,
   loading: true,  
   permissionLevel: JSON.parse(localStorage.getItem('permissionLevel'))
@@ -16,14 +16,24 @@ const state = {
 };
 
 const getters = {
-    kidsToShow(){      
-      return state.kids.filter(function(kid){
-        return kid.name.includes(state.filterTxt);
-      });
+    kidsToShow(){  
+      if (state.filterBy.txt.length > 0) {
+        return state.kids.filter(function(kid){
+        return kid.name.includes(state.filterBy.txt);
+        });
+      } else if ( state.filterBy.param==='absent') {
+        return state.kids.filter(function(kid){
+          return !kid.isArrived;
+        })
+      } else if (state.filterBy.param==='arrived') {
+        return state.kids.filter(function(kid){
+          return kid.isArrived;
+        })
+      }
+      return state.kids;
+      
     },
-    loader(){
-      return state.loading;
-    },
+    
     permissionLevel(){
       return state.permissionLevel;
     }
@@ -42,20 +52,16 @@ const mutations = {
     state.kids.push( kid );    
     state.loading = false;
   },
-  TOGGLE_LOADER(){
-    state.loading = !state.loading;
-  },
   USER_LOGIN(state, { active }){    
     localStorage.setItem('activeUser',JSON.stringify(active.user));
     localStorage.setItem('permissionLevel',JSON.stringify(active.user.permissionLevel));
     state.activeUser = JSON.parse(localStorage.getItem('activeUser'));  
-    
+    //set permissions
     if(active.user.type==='admin') {
       state.permissionLevel = 2;
     } else if( active.user.type==='registered' ) {
       state.permissionLevel = 1;
-    }
-    console.log('permission level',state.permissionLevel);
+    }    
     router.go('/admin');  
   },
   LOGOUT(){
@@ -64,8 +70,16 @@ const mutations = {
     state.activeUser = null;
     console.log('mutation logout',state.activeUser)
   },
-  KID_FILTER(state, payload) {
-    state.filterTxt = payload.txt;    
+  KID_FILTER(state, payload) {    
+    state.filterBy.txt = payload.txt;    
+  },
+  FILTER_BY_PARAM(state, payload){    
+    state.filterBy.param = payload;
+    
+  },
+  RESET_FILTER(){
+    state.filterBy.txt   = '';
+    state.filterBy.param = null;
   },
   TOGGLE_ADMIN(){
     state.showAdminPanelState = !state.showAdminPanelState;

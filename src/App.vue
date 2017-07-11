@@ -133,12 +133,15 @@ main {
 .float-right {
   float: right;
 }
-
+.space-around {
+  margin:5px 15px;
+}
 .md-fab a {
   color: #fff;
 }
 .box-filter {
   position: absolute;
+  top:10px;
   right:110px;
   background: rgba(0,0,0,0.8);
   padding:10px;
@@ -150,5 +153,8 @@ main {
 }
 .full-width {
   width: 100%;
+}
+.bg-white {
+  background: white;
 }
 </style>
