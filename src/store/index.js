@@ -11,7 +11,9 @@ const state = {
   filterBy: {txt: '', param: null},
   showAdminPanelState: false,
   loading: true,  
-  permissionLevel: JSON.parse(localStorage.getItem('permissionLevel'))
+  permissionLevel: JSON.parse(localStorage.getItem('permissionLevel')),
+  selectedKid: null,
+  isEditMode: false
   
 };
 
@@ -49,8 +51,12 @@ const mutations = {
     
   },
   CREATE_KID(state, { kid } ) {    
-    state.kids.push( kid );    
-    state.loading = false;
+    router.push('/');
+    state.kids.push( kid );        
+  },
+  UPDATE_KID(){
+    router.push('/');
+    console.log('update kid mutation');
   },
   USER_LOGIN(state, { active }){    
     localStorage.setItem('activeUser',JSON.stringify(active.user));
@@ -62,13 +68,13 @@ const mutations = {
     } else if( active.user.type==='registered' ) {
       state.permissionLevel = 1;
     }    
-    router.go('/admin');  
+    
   },
   LOGOUT(){
     localStorage.removeItem('activeUser');
     localStorage.removeItem('permissionLevel');
     state.activeUser = null;
-    console.log('mutation logout',state.activeUser)
+    
   },
   KID_FILTER(state, payload) {    
     state.filterBy.txt = payload.txt;    
@@ -105,11 +111,12 @@ const actions = {
       }
     );
   },
-  UPDATE_KID(context,payload){
+  UPDATE_KID(context,payload) { 
     
     kinderService.updateKid( payload.newKid )
-    .then(
-      
+    .then(        
+        console.log('update kid promise'),
+        context.commit(payload)      
     );
   },
   KID_DELETE(context, payload){     

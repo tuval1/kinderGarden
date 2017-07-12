@@ -11,19 +11,28 @@
   </md-button>
 
   
-  <h2 class="md-title menu-label" style="flex: 1"><router-link to="/">Kinder App</router-link></h2>
+  
+    <router-link to="/" class="md-button"><i class="fa fa-home fa-2x" aria-hidden="true"></i>
+    <span class="menu-label">
+    <span class="md-title" style="flex: 1">Kinder App</span></span>
+    </router-link>
+  
 
   
     <router-link to="login" class="md-button"><i class="fa fa-sign-in fa-2x" aria-hidden="true"></i> 
-    <span class="menu-label"> login</span></router-link>
+    <span class="menu-label"> login</span>
+    <md-tooltip md-direction="left">Login to the system</md-tooltip>
+    </router-link>
   
-  <md-button @click.stop="showAdmin" 
-  v-if="this.$store.state.permissionLevel >= 2"><i class="fa fa-user-plus fa-2x" aria-hidden="true"></i>
-<span class="menu-label"> Create</span></md-button>
+  
+    <router-link to="admin" class="md-button" v-if="this.$store.state.permissionLevel >= 2">
+    <i class="fa fa-user-plus fa-2x" aria-hidden="true"></i>
+<span class="menu-label"> Create</span>
+<md-tooltip md-direction="left">Create a new kid</md-tooltip>
+    </router-link>
 
-  <md-button class="md-icon-button" @click="toggleFilter">
-      <md-icon>search</md-icon>
-    </md-button>
+
+  
     <div class="box-filter" v-if="showFilter"><kid-Filter></kid-Filter></div>
     <p v-if="this.$store.state.activeUser" class="menu-label">Hi {{this.$store.state.activeUser.name}}</p>
 </md-toolbar>

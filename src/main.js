@@ -7,7 +7,9 @@ import store from './store'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
 import 'font-awesome/css/font-awesome.css'
+import VeeValidate from 'vee-validate';
 
+Vue.use(VeeValidate);
 Vue.use(VueMaterial)
 
 Vue.config.productionTip = false

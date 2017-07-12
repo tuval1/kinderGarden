@@ -11,7 +11,7 @@
 </md-dialog-confirm>
     
     <div class="edit-area">
-        <admin :kid="selectedKid" :isEditMode="isEditMode" v-show="showAdmin"
+        <admin :kid="selectedKid" :isEditMode="isEditMode" v-show="showAdmin1"
         @close="closeAdminPanel"></admin>
     </div>
 
@@ -21,12 +21,14 @@
     <div class="list-container">
         <kid-preview-table :permission="this.$store.state.permissionLevel"
         @updateStatus="updateKidStatus" @deleteKid="deleteKid" 
-        @edit="editKid" v-if="!showAdmin && listView" @openDialog="openDialog">
+        @edit="editKid" v-if="listView" @openDialog="openDialog">
         </kid-preview-table>
 
         <md-layout md-gutter>
+            <p v-if="kids.length===0">There are not kid</p>
             <kid-preview v-for="currKid in kids" :kid="currKid" @updateStatus="updateKidStatus"
-            @deleteKid="deleteKid" @edit="editKid" v-if="!showAdmin && !listView" @openDialog="openDialog">
+            @deleteKid="deleteKid" @edit="editKid" v-if="!listView"
+             @openDialog="openDialog" >
             </kid-preview>     
         </md-layout>  
 
@@ -44,7 +46,7 @@ import kidPreviewTable from './kid-preview-table'
 import kidFilter from './filter'
 import admin from './admin/admin'
 import confirm from './confirm'
-
+import router from '../router'
 
 export default {
     data(){
@@ -58,7 +60,8 @@ export default {
                 ok: 'OK',
                 cancel: 'Cancel'
             },
-            listView: false              
+            listView: false,
+            showAdmin1: false
         }
     },
     created(){        
@@ -86,17 +89,23 @@ export default {
             let kid = this.selectedKid;
             this.$store.dispatch({ type: 'KID_DELETE', kid }); 
             this.clearSelectedKid();
-            console.log('selected kid after clear',this.selectedKid);
+            
         },
         editKid(kid){
+            // this.$store.selectedKid = kid;
+            // this.showAdmin1 = true;
             this.selectedKid = kid;
-            this.isEditMode = true;            
-            this.$store.commit('TOGGLE_ADMIN');
+            // this.isEditMode = true;     
+            router.push('/admin');
+            // this.$store.commit('UPDATE_KID');
+            // this.$store.commit('TOGGLE_ADMIN');
         },
         closeAdminPanel(){
             this.showAdminPanel = false;
             this.isEditMode     = false;
-            this.clearSelectedKid()
+            this.showAdmin1     = false;
+            
+            this.clearSelectedKid();
         },
         clearSelectedKid(){
             this.selectedKid = null;

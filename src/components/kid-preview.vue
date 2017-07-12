@@ -1,9 +1,12 @@
 <template>
     
   <md-layout md-row-large md-row-medium md-row-small md-gutter >
+      <div>
        <md-card>
-        <md-card-media>
-                <img src="../assets/images/kindergarten.gif">
+        <md-card-media v-bind:class="{'gray-scale': !kid.isArrived}" @click="updateKidStatus(kid)">
+            <div @click="updateKidStatus(kid)">
+                <img :src="kid.img">
+            </div>
         </md-card-media>          
 
         <md-card-header>
@@ -66,6 +69,7 @@
             </md-card-content>
         </md-card-expand>
        </md-card>
+      </div>
        </md-layout>  
          
 </template>
@@ -100,13 +104,17 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 .md-card {
     border:1px solid lightgray;
     box-shadow: 0 2px 5px gray;
     margin:0 2px 10px 2px;
     min-width: 300px;
+}
+
+.gray-scale {
+    filter: grayscale(100%);
 }
 
 

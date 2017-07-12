@@ -19,21 +19,21 @@
     
     <md-layout md-flex-xsmall="100" md-flex-small="50" md-flex-medium="33">
         <md-button-toggle md-single>
-            <md-button class="md-toggle" @click="toggleView"><i class="fa fa-list" aria-hidden="true"></i>
+            <md-button class="md-toggle" @click="toggleView"><i class="fa fa-th" aria-hidden="true"></i>
             </md-button>
-            <md-button @click="toggleView"><i class="fa fa-bars" aria-hidden="true"></i>
+            <md-button @click="toggleView"><i class="fa fa-list" aria-hidden="true"></i>
             </md-button> 
         </md-button-toggle>
     </md-layout>
     </md-layout>
     </section>   
     
-    
 </template>
 
 <script>
 export default {    
     name: 'kidFilter',    
+    props: ['defaultView'],
     data(){
         return {
             filterTxt: null

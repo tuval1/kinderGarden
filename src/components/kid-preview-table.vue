@@ -21,13 +21,10 @@
         <md-table-cell>{{row.name}}</md-table-cell>
         <md-table-cell>
             <md-button class="md-raised md-icon-button" @click="updateKidStatus(row)" 
-                v-if="permission >= 1"
+                v-if="permission >= 0"
                 v-bind:class="[row.isArrived ? 'md-accent' : '']">
-
-                <i class="fa fa-check-circle" aria-hidden="true"></i>
-
-                
-                </md-button>
+                <i class="fa fa-check-circle" aria-hidden="true"></i>                
+            </md-button>
             </md-table-cell>
         <md-table-cell>{{row.parents[0].name}}</md-table-cell>
         <md-table-cell>{{row.parents[0].phone}}</md-table-cell>
@@ -57,8 +54,8 @@
     md-page="1"
     md-label="Rows"
     md-separator="of"
-    :md-page-options="[5, 10, 25, 50]"
-    @pagination="onPagination"></md-table-pagination>
+    :md-page-options="[5, 10, 25, 50]">
+    </md-table-pagination>
 </md-table-card>
 </template>
 
@@ -75,8 +72,11 @@ export default {
         
     },
     methods: {
-        updateKidStatus(kid){            
-            this.$emit('updateStatus',kid);
+        updateKidStatus(kid){      
+            if (this.permission >= 1) {
+                this.$emit('updateStatus',kid);
+            }
+            
         },
         deleteKid(kid){
             this.$emit('openDialog','dialog5',kid);
