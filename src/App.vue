@@ -5,12 +5,7 @@
     </div>-->
 
     
-<md-toolbar class="relative">
-  <md-button class="md-icon-button">
-    <md-icon>menu</md-icon>
-  </md-button>
-
-  
+<md-toolbar class="relative flex justify-center justify-between">
   
     <router-link to="/" class="md-button"><i class="fa fa-home fa-2x" aria-hidden="true"></i>
     <span class="menu-label">
@@ -37,7 +32,7 @@
     <p v-if="this.$store.state.activeUser" class="menu-label">Hi {{this.$store.state.activeUser.name}}</p>
 </md-toolbar>
 
-
+<!--
     <div class="phone-viewport">  
   <md-sidenav class="md-left" ref="leftSidenav" @open="open('Left')" @close="close('Left')">
     <md-toolbar class="md-large">
@@ -49,7 +44,7 @@
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi cupiditate esse necessitatibus beatae nobis, deserunt ut est fugit, tempora deleniti, eligendi commodi doloribus. Nemo, assumenda possimus, impedit inventore perferendis iusto!</p>
   </md-sidenav>
   </md-sidenav>
-</div>
+</div>-->
 
 
     <main>      
@@ -162,6 +157,16 @@ main {
 }
 .full-width {
   width: 100%;
+}
+.flex {
+  display: flex;
+}
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
 }
 .bg-white {
   background: white;

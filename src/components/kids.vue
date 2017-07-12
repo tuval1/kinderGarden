@@ -65,7 +65,12 @@ export default {
         }
     },
     created(){        
-        this.$store.dispatch({ type: 'KIDS_LOAD' });
+        
+        if(this.$store.state.kids.length === 0) {
+            console.log('geting kids list from the server');
+            this.$store.dispatch({ type: 'KIDS_LOAD' });
+        }
+        
     },
     computed: {
         kids(){            
@@ -92,13 +97,11 @@ export default {
             
         },
         editKid(kid){
-            // this.$store.selectedKid = kid;
-            // this.showAdmin1 = true;
-            this.selectedKid = kid;
-            // this.isEditMode = true;     
+            this.selectedKid              = kid;
+            this.$store.state.selectedKid = kid;
+            this.$store.state.isEditMode  = true;                
             router.push('/admin');
-            // this.$store.commit('UPDATE_KID');
-            // this.$store.commit('TOGGLE_ADMIN');
+            
         },
         closeAdminPanel(){
             this.showAdminPanel = false;
@@ -126,17 +129,22 @@ export default {
         },
         onClose(type) {
         console.log('Closed', type);
-        if(type==='ok'){
-            console.log('confirmed');
-            this.deleteKid();
+            if(type==='ok'){
+                
+                this.deleteKid();
+            }
+        },   
+        clearEditVar(){
+            this.$store.state.selectedKid = null;
+            this.$store.state.isEditMode = false;
         }
-    }
         
     },
-    // mounted(){
-    //     if (this.$store.state.loading)
-    //         this.$store.commit('TOGGLE_LOADER');            
-    //     }
+    mounted(){
+        if(this.$store.state.isEditMode)
+        this.clearEditVar();
+        
+        }
     
 }
 </script>

@@ -10,9 +10,10 @@
                         </md-card-header-text>
     
                         <md-button class="md-icon-button" md-menu-trigger>
-                            <a href="#" @click.prevent="closeAdminPanel">
+                            <router-link to="/">
+
                                 <i class="fa fa-window-close-o fa-2x" aria-hidden="true"></i>
-                            </a>
+                            </router-link>
                         </md-button>
                     </md-card-header>
     
@@ -30,7 +31,7 @@
     
                     <md-input-container v-bind:class="{}">
                         <label>Image</label>
-                        <md-file v-model="file" @selected="httpRequest"></md-file>                        
+                        <md-file v-model="imageUrl" @selected="httpRequest"></md-file>                        
                     </md-input-container>
                     <md-spinner md-indeterminate v-if="loading"></md-spinner>
                     <span>{{uploadMsg}}</span>
@@ -88,16 +89,20 @@ import axios from 'axios'
 export default {
 
     name: 'kids-admin',
-    props: ['kid', 'isEditMode'],
+    props: ['isEditMode'],
     beforeCreate() {
 
     },
     created() {
-
+        
+        if(this.kid) {
+            this.assignVarToForm();
+        }
     },
 
     data() {
         return {
+            kid: this.$store.state.selectedKid,
             kidName: null,
             kidBirthday: null,
             file: null,
@@ -112,7 +117,6 @@ export default {
             imageUrl: '',
             loading: false,
             uploadMsg: null
-
         }
     },
     computed: {
@@ -127,7 +131,7 @@ export default {
                     return;
                 }
 
-                alert('Correct them errors!');
+                
             });
 
 
@@ -162,7 +166,7 @@ export default {
             }
             newKid.parents.push(parentObj);
 
-            if (this.isEditMode) {
+            if (this.$store.state.isEditMode) {
                 this.$store.dispatch({ type: 'UPDATE_KID', newKid });
             } else {
                 this.$store.dispatch({ type: 'CREATE_KID', newKid });
@@ -193,7 +197,7 @@ export default {
                 data: formData,
             }).then((res) => {
                 if (res.status === 200) {
-                    console.log('upload sucsess', res);
+                    
                     this.imageUrl = res.data.url;
                     this.loading = false;
                     this.uploadMsg = "Image has been upload successfully"
@@ -208,20 +212,22 @@ export default {
                 this.loading = false;
             });
         },
+        assignVarToForm(){
+            
+            this.kidName = this.kid.name;
+            this.kidBirthday = this.kid.birthday;
+            this.kidId = this.kid._id;
+            this.pName = this.kid.parents[0].name;
+            this.pPhone = this.kid.parents[0].phone;
+            this.pEmail = this.kid.parents[0].email;
+            this.pAddress = this.kid.parents[0].address;
+            this.imageUrl = this.kid.img;
+        }
 
     },
 
     watch: {
-        kid(kidVal) {
-            this.kidName = kidVal.name;
-            this.kidBirthday = kidVal.birthday;
-            this.kidId = kidVal._id;
-            this.pName = kidVal.parents[0].name;
-            this.pPhone = kidVal.parents[0].phone;
-            this.pEmail = kidVal.parents[0].email;
-            this.pAddress = kidVal.parents[0].address;
-
-        }
+        
     }
 }
 </script>

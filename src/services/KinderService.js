@@ -8,7 +8,7 @@ const baseUrl = 'http://localhost:3003';
 const query = () => {
   return axios.get(crudUrl)
     .then(function (response) {
-      console.log('server response: ',response);
+      
       return response.data;
 
     })

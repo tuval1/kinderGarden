@@ -9,7 +9,7 @@ const state = {
   kids: [],  
   activeUser: JSON.parse(localStorage.getItem('activeUser')),
   filterBy: {txt: '', param: null},
-  showAdminPanelState: false,
+  
   loading: true,  
   permissionLevel: JSON.parse(localStorage.getItem('permissionLevel')),
   selectedKid: null,
@@ -55,8 +55,10 @@ const mutations = {
     state.kids.push( kid );        
   },
   UPDATE_KID(){
+    state.isEditMode = false;
+    state.selectedKid = null;
     router.push('/');
-    console.log('update kid mutation');
+    
   },
   USER_LOGIN(state, { active }){    
     localStorage.setItem('activeUser',JSON.stringify(active.user));
@@ -86,9 +88,6 @@ const mutations = {
   RESET_FILTER(){
     state.filterBy.txt   = '';
     state.filterBy.param = null;
-  },
-  TOGGLE_ADMIN(){
-    state.showAdminPanelState = !state.showAdminPanelState;
   }
 }
 
@@ -115,7 +114,7 @@ const actions = {
     
     kinderService.updateKid( payload.newKid )
     .then(        
-        console.log('update kid promise'),
+        
         context.commit(payload)      
     );
   },
